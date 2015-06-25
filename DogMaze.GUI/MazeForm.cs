@@ -17,32 +17,27 @@ namespace DogMaze.GUI
         private Room.directions direction = Room.directions.east;
         private WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
         private string soundUrl = @"c:\Users\Daniel\documents\visual studio 2013\Projects\Maze\DogMaze.GUI\Resources\Dog sound effect woof.mp3";
+
         public MazeForm()
         {  
             InitializeComponent();
-            var factory = new LevelFactory();
-            var maze = factory.MakeLevelTwo();
-            this.player = new Player(maze.GetRoom(1), maze.GetRoom(9));
-            Draw(player.GetCurrentRoom());
-            wplayer.URL = soundUrl;
-            wplayer.controls.play();
-
-            this.DogRunningEast.Enabled = false;
-            this.DogRunningEast.Visible = false;
-
-            this.DogRunningWest.Enabled = false;
-            this.DogRunningWest.Visible = false;
-
-            this.DogRunningNorth.Enabled = false;
-            this.DogRunningNorth.Visible = false;
-
-            this.DogRunningSouth.Enabled = false;
-            this.DogRunningSouth.Visible = false;
+            InitializeMaze();
         }
 
-        private void MazeForm_Load(object sender, EventArgs e)
+        private void InitializeMaze()
         {
-            
+            var factory = new LevelFactory();
+            var maze = factory.MakeLevelTwo();
+
+            var startInRoom = maze.GetRoom(1);
+            var finishInRoom = maze.GetRoom(9);
+            this.player = new Player(startInRoom, finishInRoom);
+
+            Draw(player.GetCurrentRoom());
+            wplayer.URL = soundUrl;
+            PlayDogBarkAudioClip();
+
+            StopAllCurrentAnimation();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -70,91 +65,91 @@ namespace DogMaze.GUI
 
         private void AnimatePlayer()
         {
-                switch (direction)
-                {
-                    case Room.directions.north:
-                        this.DogRunningNorth.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningNorth;
-                        this.DogRunningNorth.Enabled = true;
-                        this.DogRunningNorth.Visible = true;
-                        NorthTimer.Start();
-                        break;
-                    case Room.directions.east:
+            StopAllCurrentAnimation();
+            StartNewAnimation();
+            timer.Start();
+        }
 
-                        this.DogRunningEast.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningEast;
-                        this.DogRunningEast.Enabled = true;
-                        this.DogRunningEast.Visible = true;
-                        EastTimer.Start();
-                        break;
-                    case Room.directions.south:
-                        this.DogRunningSouth.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningSouth;
-                        this.DogRunningSouth.Enabled = true;
-                        this.DogRunningSouth.Visible = true;
-                        SouthTimer.Start();
-                        break;
-                    case Room.directions.west:
-                        this.DogRunningWest.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningWest;
-                        this.DogRunningWest.Enabled = true;
-                        this.DogRunningWest.Visible = true;
-                        WestTimer.Start();
-                        break;
-                }                      
+        private void StartNewAnimation()
+        {
+            switch (direction)
+            {
+                case Room.directions.north:
+                    this.DogRunningNorth.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningNorth;
+                    this.DogRunningNorth.Visible = true;
+                    break;
+                case Room.directions.east:
+                    this.DogRunningEast.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningEast;
+                    this.DogRunningEast.Visible = true;
+                    break;
+                case Room.directions.south:
+                    this.DogRunningSouth.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningSouth;
+                    this.DogRunningSouth.Visible = true;
+                    break;
+                case Room.directions.west:
+                    this.DogRunningWest.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerRunningWest;
+                    this.DogRunningWest.Visible = true;
+                    break;
+            }
         }
 
         private void Draw(Room room)
         {
+            DrawCenter();
+            DrawNorthWall(room);
+            DrawEastWall(room);
+            DrawSouthWall(room);
+            DrawWestWall(room);
+        }
+
+        private void DrawCenter()
+        {
             if (player.hasFinished())
             {
                 this.Dog.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerWinner;
-                wplayer.controls.play();
+                PlayDogBarkAudioClip();
             }
             else
                 this.Dog.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerStanding;
+        }
 
+        private void DrawNorthWall(Room room)
+        {
             bool hasNorthDoor = room.GetSide(Room.directions.north).GetType() == typeof(Door);
             this.NorthWall.Image = (hasNorthDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundTopDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundTopNoDoor);
+        }
 
+        private void DrawEastWall(Room room)
+        {
             bool hasEastDoor = room.GetSide(Room.directions.east).GetType() == typeof(Door);
             this.EastWall.Image = (hasEastDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundRightDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundRightNoDoor);
+        }
 
+        private void DrawSouthWall(Room room)
+        {
             bool hasSouthDoor = room.GetSide(Room.directions.south).GetType() == typeof(Door);
             this.SouthWall.Image = (hasSouthDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundBottomDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundBottomNoDoor);
+        }
 
+        private void DrawWestWall(Room room)
+        {
             bool hasWestDoor = room.GetSide(Room.directions.west).GetType() == typeof(Door);
             this.WestWall.Image = (hasWestDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftNoDoor);
         }
 
-        private void timer1_Tick(object sender, System.EventArgs e)
+        private void timer_Tick(object sender, System.EventArgs e)
         {
-            EastTimer.Stop();
-            this.DogRunningEast.Enabled = false;
-            this.DogRunningEast.Visible = false;
+            timer.Stop();
+            StopAllCurrentAnimation();
             MovePlayer();
         }
 
-
-
-        private void timer2_Tick(object sender, EventArgs e)
+        private void StopAllCurrentAnimation()
         {
-            WestTimer.Stop();
-            this.DogRunningWest.Enabled = false;
-            this.DogRunningWest.Visible = false;
-            MovePlayer();
-        }
-
-        private void NorthTimer_Tick(object sender, EventArgs e)
-        {
-            NorthTimer.Stop();
-            this.DogRunningNorth.Enabled = false;
             this.DogRunningNorth.Visible = false;
-            MovePlayer();
-        }
-
-        private void SouthTimer_Tick(object sender, EventArgs e)
-        {
-            SouthTimer.Stop();
-            this.DogRunningSouth.Enabled = false;
+            this.DogRunningEast.Visible = false;
             this.DogRunningSouth.Visible = false;
-            MovePlayer();
+            this.DogRunningWest.Visible = false;
         }
 
         private void MovePlayer()
@@ -165,11 +160,15 @@ namespace DogMaze.GUI
             }
             catch
             {
-                wplayer.controls.play();
+                PlayDogBarkAudioClip();
             }
             
             Draw(player.GetCurrentRoom());
         }
 
+        private void PlayDogBarkAudioClip()
+        {
+            wplayer.controls.play();
+        }
     }
 }
