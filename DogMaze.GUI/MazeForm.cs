@@ -128,26 +128,31 @@ namespace DogMaze.GUI
 
         private void DrawNorthWall(Room room)
         {
-            bool hasNorthDoor = room.GetSide(Room.directions.north).GetType() == typeof(Door);
+            bool hasNorthDoor = isDoor(room.GetSide(Room.directions.north));
             this.NorthWall.Image = (hasNorthDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundTopDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundTopNoDoor);
         }
 
         private void DrawEastWall(Room room)
         {
-            bool hasEastDoor = room.GetSide(Room.directions.east).GetType() == typeof(Door);
+            bool hasEastDoor = isDoor(room.GetSide(Room.directions.east));
             this.EastWall.Image = (hasEastDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundRightDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundRightNoDoor);
         }
 
         private void DrawSouthWall(Room room)
         {
-            bool hasSouthDoor = room.GetSide(Room.directions.south).GetType() == typeof(Door);
+            bool hasSouthDoor = isDoor(room.GetSide(Room.directions.south));
             this.SouthWall.Image = (hasSouthDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundBottomDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundBottomNoDoor);
         }
 
         private void DrawWestWall(Room room)
         {
-            bool hasWestDoor = room.GetSide(Room.directions.west).GetType() == typeof(Door);
+            bool hasWestDoor = isDoor(room.GetSide(Room.directions.west));
             this.WestWall.Image = (hasWestDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftNoDoor);
+        }
+
+        private bool isDoor(MazeElement element)
+        {
+            return element.GetType() == typeof(Door);
         }
 
         private void StopAllCurrentAnimation()
