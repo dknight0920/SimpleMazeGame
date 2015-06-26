@@ -10,11 +10,9 @@ namespace MazeLib.Tests
         [TestMethod]
         public void TestLevelOneNavigation()
         {
-            var factory = new LevelFactory();
+            var level = new LevelFactory().MakeLevelOne();
 
-            var maze = factory.MakeLevelOne();
-
-            var player = new Player(maze.GetRoom(1), maze.GetRoom(7));
+            var player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
 
             Assert.AreEqual(1, player.GetCurrentRoom().GetRoomNumber());
 

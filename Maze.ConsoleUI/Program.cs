@@ -9,15 +9,9 @@ namespace Maze.ConsoleUI
 {
     class Program
     {
-        static void Main(string[] args)
+         static void Main(string[] args)
         {
-            var factory = new LevelFactory();
-
-            var maze = factory.MakeLevelTwo();
-
-            var player = new Player(maze.GetRoom(1), maze.GetRoom(9));
-
-            new PlayerController(player).Start();
+            new PlayerController().Start();
         }
     }
 }

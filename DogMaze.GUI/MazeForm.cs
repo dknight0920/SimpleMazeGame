@@ -13,6 +13,7 @@ namespace DogMaze.GUI
 {
     public partial class MazeForm : Form
     {
+        private Level level = null;
         private Player player;
         private Room.directions direction = Room.directions.east;
         private WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
@@ -21,17 +22,13 @@ namespace DogMaze.GUI
         public MazeForm()
         {  
             InitializeComponent();
-            InitializeMaze();
+            InitializeMazeLevel();
         }
 
-        private void InitializeMaze()
+        private void InitializeMazeLevel()
         {
-            var factory = new LevelFactory();
-            var maze = factory.MakeLevelTwo();
-
-            var startInRoom = maze.GetRoom(1);
-            var finishInRoom = maze.GetRoom(9);
-            this.player = new Player(startInRoom, finishInRoom);
+            this.level = new LevelFactory().GetNextLevel(level);
+            this.player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
 
             Draw(player.GetCurrentRoom());
             wplayer.URL = soundUrl;
@@ -121,9 +118,21 @@ namespace DogMaze.GUI
             {
                 this.Dog.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerWinner;
                 PlayDogBarkAudioClip();
+                LoadNextLevel();
             }
             else
                 this.Dog.Image = global::DogMaze.GUI.Properties.Resources.MazeBackPlayerStanding;
+        }
+
+        private void LoadNextLevel()
+        {
+            nextLevelTimer.Start(); 
+        }
+
+        private void nextLevelTimer_Tick(object sender, EventArgs e)
+        {
+            nextLevelTimer.Stop();
+            InitializeMazeLevel();
         }
 
         private void DrawNorthWall(Room room)

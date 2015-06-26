@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Door.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="LevelFactory.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="MazeElement.cs" />

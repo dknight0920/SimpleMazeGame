@@ -4,18 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Maze.ConsoleUI
 {
     public class PlayerController
     {
+        private Timer timer;
+        private Level level = null;
         private Player player;
         private RoomDrawer drawer;
 
-        public PlayerController(Player player)
+        public PlayerController()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            this.player = player;
+            InitLevel();
+        }
+
+        private void InitLevel()
+        {
+            this.level = new LevelFactory().GetNextLevel(level);
+            this.player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
             this.drawer = new RoomDrawer();
             drawer.Draw(player.GetCurrentRoom());
         }
@@ -55,13 +64,34 @@ namespace Maze.ConsoleUI
                     Console.ReadLine();
                 }
 
-                if (player.hasFinished()) Console.ForegroundColor = ConsoleColor.Red;
+                if (player.hasFinished())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    LoadNextLevel();
+                }
+
                 drawer.Draw(player.GetCurrentRoom());
                 Console.Beep();
             }
             while (keyinfo.Key != ConsoleKey.Escape);
 
             Console.WriteLine("You have quit the game.");
+        }
+
+        private void LoadNextLevel()
+        {
+            this.timer = new System.Timers.Timer();
+            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            timer.Interval = 1000;
+            timer.Enabled = true;
+            timer.Start();
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            timer.Stop();
+            this.timer.Enabled = false;
+            InitLevel();
         }
     }
 }

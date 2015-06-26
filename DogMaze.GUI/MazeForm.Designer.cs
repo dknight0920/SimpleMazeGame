@@ -40,6 +40,7 @@ namespace DogMaze.GUI
             this.SouthWall = new System.Windows.Forms.PictureBox();
             this.NorthWall = new System.Windows.Forms.PictureBox();
             this.EastWall = new System.Windows.Forms.PictureBox();
+            this.nextLevelTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DogRunningSouth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DogRunningNorth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DogRunningWest)).BeginInit();
@@ -146,6 +147,11 @@ namespace DogMaze.GUI
             this.EastWall.TabIndex = 4;
             this.EastWall.TabStop = false;
             // 
+            // nextLevelTimer
+            // 
+            this.nextLevelTimer.Interval = 2000;
+            this.nextLevelTimer.Tick += new System.EventHandler(this.nextLevelTimer_Tick);
+            // 
             // MazeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,6 +194,7 @@ namespace DogMaze.GUI
         private System.Windows.Forms.PictureBox DogRunningWest;
         private System.Windows.Forms.PictureBox DogRunningNorth;
         private System.Windows.Forms.PictureBox DogRunningSouth;
+        private System.Windows.Forms.Timer nextLevelTimer;
     }
 }
 

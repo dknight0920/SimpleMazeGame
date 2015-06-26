@@ -8,7 +8,13 @@ namespace MazeLib
 {
     public class LevelFactory
     {
-        public Maze MakeLevelOne()
+        public Level GetNextLevel(Level level)
+        {
+            if (level == null) return MakeLevelOne();
+            return MakeLevelTwo();
+        }
+
+        private Level MakeLevelOne()
         {
             var factory = new MazeFactory();
 
@@ -48,10 +54,10 @@ namespace MazeLib
             maze.AddRoom(room3);
             maze.AddRoom(room4);
 
-            return maze;
+            return new Level(maze, room1, room4);
         }
 
-        public Maze MakeLevelTwo()
+        private Level MakeLevelTwo()
         {
             var factory = new MazeFactory();
 
@@ -147,7 +153,7 @@ namespace MazeLib
             maze.AddRoom(room10);
             maze.AddRoom(room11);
 
-            return maze;
+            return new Level(maze, room1, room9);
         }
     }
 }
