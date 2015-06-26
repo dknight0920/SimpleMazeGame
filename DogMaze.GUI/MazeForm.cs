@@ -67,7 +67,6 @@ namespace DogMaze.GUI
         {
             StopAllCurrentAnimation();
             StartNewAnimation();
-            timer.Start();
         }
 
         private void StartNewAnimation()
@@ -91,6 +90,20 @@ namespace DogMaze.GUI
                     this.DogRunningWest.Visible = true;
                     break;
             }
+
+            PlayAnimationFormTimerDuration();
+        }
+
+        private void PlayAnimationFormTimerDuration()
+        {
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, System.EventArgs e)
+        {
+            timer.Stop();
+            StopAllCurrentAnimation();
+            MovePlayer();
         }
 
         private void Draw(Room room)
@@ -135,13 +148,6 @@ namespace DogMaze.GUI
         {
             bool hasWestDoor = room.GetSide(Room.directions.west).GetType() == typeof(Door);
             this.WestWall.Image = (hasWestDoor ? global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftDoor : global::DogMaze.GUI.Properties.Resources.MazeBackGroundLeftNoDoor);
-        }
-
-        private void timer_Tick(object sender, System.EventArgs e)
-        {
-            timer.Stop();
-            StopAllCurrentAnimation();
-            MovePlayer();
         }
 
         private void StopAllCurrentAnimation()
