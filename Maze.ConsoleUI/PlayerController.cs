@@ -11,7 +11,6 @@ namespace Maze.ConsoleUI
     public class PlayerController
     {
         private Timer timer;
-        private Level level = null;
         private Player player;
         private RoomDrawer drawer;
 
@@ -23,7 +22,7 @@ namespace Maze.ConsoleUI
 
         private void InitLevel()
         {
-            this.level = new LevelFactory().GetNextLevel(level);
+            var level = LevelFactory.Instance().GetLevel();
             this.player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
             this.drawer = new RoomDrawer();
             drawer.Draw(player.GetCurrentRoom());

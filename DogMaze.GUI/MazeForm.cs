@@ -13,7 +13,6 @@ namespace DogMaze.GUI
 {
     public partial class MazeForm : Form
     {
-        private Level level = null;
         private Player player;
         private Room.directions direction = Room.directions.east;
         private WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
@@ -27,7 +26,7 @@ namespace DogMaze.GUI
 
         private void InitializeMazeLevel()
         {
-            this.level = new LevelFactory().GetNextLevel(level);
+            var level = LevelFactory.Instance().GetLevel();
             this.player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
 
             Draw(player.GetCurrentRoom());

@@ -8,15 +8,33 @@ namespace MazeLib
 {
     public class LevelFactory
     {
-        public Level GetNextLevel(Level level)
+        private static LevelFactory instance = null;
+        private static Level level = null;
+
+        protected LevelFactory()
+        { 
+        
+        }
+
+        public static LevelFactory Instance()
         {
-            if (level == null) return MakeLevelOne();
-            return MakeLevelTwo();
+            if (instance == null) instance = new LevelFactory();
+            return instance;
+        }
+
+        public Level GetLevel()
+        {
+            if (level == null)
+                level = MakeLevelOne();
+            else
+                level = level.Next();
+
+            return level;
         }
 
         private Level MakeLevelOne()
         {
-            var factory = new MazeFactory();
+            var factory = MazeFactory.Instance();
 
             var maze = factory.MakeMaze();
 
@@ -54,12 +72,12 @@ namespace MazeLib
             maze.AddRoom(room3);
             maze.AddRoom(room4);
 
-            return new Level(maze, room1, room4);
+            return new Level(maze, room1, room4, next: MakeLevelTwo);
         }
 
         private Level MakeLevelTwo()
         {
-            var factory = new MazeFactory();
+            var factory = MazeFactory.Instance();
 
             var maze = factory.MakeMaze();
 
@@ -153,7 +171,7 @@ namespace MazeLib
             maze.AddRoom(room10);
             maze.AddRoom(room11);
 
-            return new Level(maze, room1, room9);
+            return new Level(maze, room1, room9, next: MakeLevelOne);
         }
     }
 }

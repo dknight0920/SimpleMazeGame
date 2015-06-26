@@ -8,6 +8,19 @@ namespace MazeLib
 {
     public class MazeFactory
     {
+        private static MazeFactory instance = null;
+
+        protected MazeFactory()
+        { 
+        
+        }
+
+        public static MazeFactory Instance()
+        {
+            if (instance == null) instance = new MazeFactory();
+            return instance;
+        }
+
         public virtual Maze MakeMaze()
         {
             return new Maze();

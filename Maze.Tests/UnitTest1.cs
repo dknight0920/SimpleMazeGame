@@ -10,7 +10,7 @@ namespace MazeLib.Tests
         [TestMethod]
         public void TestLevelOneNavigation()
         {
-            var level = new LevelFactory().MakeLevelOne();
+            var level = LevelFactory.Instance().GetLevel();
 
             var player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
 
