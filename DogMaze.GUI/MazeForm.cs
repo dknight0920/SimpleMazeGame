@@ -16,7 +16,7 @@ namespace DogMaze.GUI
         private Player player;
         private Room.directions direction = Room.directions.east;
         private WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
-        private string soundUrl = @"c:\Users\Daniel\documents\visual studio 2013\Projects\Maze\DogMaze.GUI\Resources\Dog sound effect woof.mp3";
+        private string soundUrl = @"Resources\Dog sound effect woof.mp3";
 
         public MazeForm()
         {  

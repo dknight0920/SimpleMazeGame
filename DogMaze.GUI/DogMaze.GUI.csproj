@@ -151,7 +151,9 @@
     <None Include="Resources\MazeBackPlayerWinner.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Dog sound effect woof.mp3" />
+    <Content Include="Resources\Dog sound effect woof.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="WMPLib">
