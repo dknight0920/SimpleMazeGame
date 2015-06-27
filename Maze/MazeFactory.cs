@@ -6,37 +6,36 @@ using System.Threading.Tasks;
 
 namespace MazeLib
 {
-    public class MazeFactory
+    public sealed class MazeFactory
     {
-        private static MazeFactory instance = null;
+        private static readonly Lazy<MazeFactory> lazyInstance = new Lazy<MazeFactory>(() => new MazeFactory());
 
-        protected MazeFactory()
+        private MazeFactory()
         { 
         
         }
 
         public static MazeFactory Instance()
         {
-            if (instance == null) instance = new MazeFactory();
-            return instance;
+            return lazyInstance.Value;
         }
 
-        public virtual Maze MakeMaze()
+        public Maze MakeMaze()
         {
             return new Maze();
         }
 
-        public virtual Wall MakeWall()
+        public Wall MakeWall()
         {
             return new Wall();
         }
 
-        public virtual Room MakeRoom(int number)
+        public Room MakeRoom(int number)
         {
             return new Room(number);
         }
 
-        public virtual Door MakeDoor(Room room1, Room room2)
+        public Door MakeDoor(Room room1, Room room2)
         {
             return new Door(room1, room2);
         }

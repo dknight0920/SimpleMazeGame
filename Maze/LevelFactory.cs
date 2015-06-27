@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace MazeLib
 {
-    public class LevelFactory
+    public sealed class LevelFactory
     {
         private static MazeFactory factory = MazeFactory.Instance();
-        private static LevelFactory instance = null;
+        private static readonly Lazy<LevelFactory> lazyInstance = new Lazy<LevelFactory>(() => new LevelFactory());
         private static Level level = null;
 
-        protected LevelFactory()
+        private LevelFactory()
         { 
         
         }
 
         public static LevelFactory Instance()
         {
-            if (instance == null) instance = new LevelFactory();
-            return instance;
+            return lazyInstance.Value;
         }
 
         public Level GetLevel()
