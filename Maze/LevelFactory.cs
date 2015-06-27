@@ -8,6 +8,7 @@ namespace MazeLib
 {
     public class LevelFactory
     {
+        private static MazeFactory factory = MazeFactory.Instance();
         private static LevelFactory instance = null;
         private static Level level = null;
 
@@ -34,8 +35,6 @@ namespace MazeLib
 
         private Level MakeLevelOne()
         {
-            var factory = MazeFactory.Instance();
-
             var maze = factory.MakeMaze();
 
             var room1 = factory.MakeRoom(1);
@@ -77,8 +76,6 @@ namespace MazeLib
 
         private Level MakeLevelTwo()
         {
-            var factory = MazeFactory.Instance();
-
             var maze = factory.MakeMaze();
 
             var room1 = factory.MakeRoom(1);
