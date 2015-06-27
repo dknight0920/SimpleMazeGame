@@ -21,7 +21,13 @@ namespace DogMaze.GUI
         public MazeForm()
         {  
             InitializeComponent();
+            InitializeSoundClipUrl();
             InitializeMazeLevel();
+        }
+
+        private void InitializeSoundClipUrl()
+        {
+            wplayer.URL = soundUrl;
         }
 
         private void InitializeMazeLevel()
@@ -29,32 +35,31 @@ namespace DogMaze.GUI
             var level = LevelFactory.Instance().GetLevel();
             this.player = new Player(level.GetStartingRoom(), level.GetFinishingRoom());
 
-            Draw(player.GetCurrentRoom());
-            wplayer.URL = soundUrl;
+            Draw(player.GetCurrentRoom());           
             PlayDogBarkAudioClip();
-
-            StopAllCurrentAnimation();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (keyData)
+            if (!player.hasFinished())
             {
-                case Keys.Up:
-                    direction = Room.directions.north;
-                    break;
-                case Keys.Right:
-                    direction = Room.directions.east;
-                    break;
-                case Keys.Down:
-                    direction = Room.directions.south;
-                    break;
-                case Keys.Left:
-                    direction = Room.directions.west;
-                    break;
+                switch (keyData)
+                {
+                    case Keys.Up:
+                        direction = Room.directions.north;
+                        break;
+                    case Keys.Right:
+                        direction = Room.directions.east;
+                        break;
+                    case Keys.Down:
+                        direction = Room.directions.south;
+                        break;
+                    case Keys.Left:
+                        direction = Room.directions.west;
+                        break;
+                }
+                AnimatePlayer();
             }
-
-            AnimatePlayer();
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -87,23 +92,23 @@ namespace DogMaze.GUI
                     break;
             }
 
-            PlayAnimationFormTimerDuration();
+            PlayAnimationForTimerDuration();
         }
 
-        private void PlayAnimationFormTimerDuration()
+        private void PlayAnimationForTimerDuration()
         {
-            timer.Start();
+            animationTimer.Start();
         }
 
-        private void timer_Tick(object sender, System.EventArgs e)
+        private void animationTimer_Tick(object sender, System.EventArgs e)
         {
-            timer.Stop();
-            StopAllCurrentAnimation();
+            animationTimer.Stop();      
             MovePlayer();
         }
 
         private void Draw(Room room)
         {
+            StopAllCurrentAnimation();
             DrawCenter();
             DrawNorthWall(room);
             DrawEastWall(room);

@@ -30,7 +30,7 @@ namespace DogMaze.GUI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.animationTimer = new System.Windows.Forms.Timer(this.components);
             this.DogRunningSouth = new System.Windows.Forms.PictureBox();
             this.DogRunningNorth = new System.Windows.Forms.PictureBox();
             this.DogRunningWest = new System.Windows.Forms.PictureBox();
@@ -52,10 +52,10 @@ namespace DogMaze.GUI
             ((System.ComponentModel.ISupportInitialize)(this.EastWall)).BeginInit();
             this.SuspendLayout();
             // 
-            // timer
+            // animationTimer
             // 
-            this.timer.Interval = 700;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.animationTimer.Interval = 700;
+            this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
             // 
             // DogRunningSouth
             // 
@@ -190,7 +190,7 @@ namespace DogMaze.GUI
         private System.Windows.Forms.PictureBox Dog;
         private System.Windows.Forms.PictureBox EastWall;
         private System.Windows.Forms.PictureBox DogRunningEast;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer animationTimer;
         private System.Windows.Forms.PictureBox DogRunningWest;
         private System.Windows.Forms.PictureBox DogRunningNorth;
         private System.Windows.Forms.PictureBox DogRunningSouth;
