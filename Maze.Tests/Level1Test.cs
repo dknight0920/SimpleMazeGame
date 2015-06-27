@@ -5,7 +5,7 @@ using MazeLib;
 namespace MazeLib.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class Level1Test
     {
         [TestMethod]
         public void TestLevelOneNavigation()
